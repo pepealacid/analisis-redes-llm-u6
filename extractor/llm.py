@@ -66,28 +66,42 @@ class LlmMixin(ExtractorBase):
         model = self._llm_model
 
         if hasattr(tokenizer, "apply_chat_template"):
-            input_ids = tokenizer.apply_chat_template(
+            encoded = tokenizer.apply_chat_template(
                 messages,
                 add_generation_prompt=True,
                 return_tensors="pt",
             )
         else:
             text = "\n".join(f"{m['role']}: {m['content']}" for m in messages)
-            input_ids = tokenizer(text, return_tensors="pt").input_ids
+            encoded = tokenizer(text, return_tensors="pt")
+
+        if hasattr(encoded, "input_ids"):
+            input_ids = encoded.input_ids
+            attention_mask = getattr(encoded, "attention_mask", None)
+        elif isinstance(encoded, dict):
+            input_ids = encoded["input_ids"]
+            attention_mask = encoded.get("attention_mask")
+        else:
+            input_ids = encoded
+            attention_mask = None
 
         device = next(model.parameters()).device
         input_ids = input_ids.to(device)
         input_len = input_ids.shape[-1]
 
+        generate_kwargs = {
+            "input_ids": input_ids,
+            "max_new_tokens": max_new_tokens,
+            "do_sample": True,
+            "temperature": 0.7,
+            "top_p": 0.9,
+            "pad_token_id": tokenizer.pad_token_id,
+        }
+        if attention_mask is not None:
+            generate_kwargs["attention_mask"] = attention_mask.to(device)
+
         with torch.no_grad():
-            output_ids = model.generate(
-                input_ids,
-                max_new_tokens=max_new_tokens,
-                do_sample=True,
-                temperature=0.7,
-                top_p=0.9,
-                pad_token_id=tokenizer.pad_token_id,
-            )
+            output_ids = model.generate(**generate_kwargs)
 
         new_tokens = output_ids[0, input_len:]
         return tokenizer.decode(new_tokens, skip_special_tokens=True).strip()
