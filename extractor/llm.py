@@ -6,12 +6,68 @@ Método principal:
 """
 
 import os
+import sys
+import time
+from threading import Thread
 from typing import Any, Optional
+
+from tqdm import tqdm
+from transformers.generation.streamers import BaseStreamer
 
 from .base import ExtractorBase
 
 DEFAULT_LLM_MODEL = "google/gemma-4-E2B-it"
 DEFAULT_CHAT_LOG = "outputs/llm_chat.txt"
+DEFAULT_MAX_NEW_TOKENS = 256
+DEFAULT_CHAR_DELAY = 0.006
+
+
+class _GenerationDisplayStreamer(BaseStreamer):
+    """Barra de progreso + texto en consola carácter a carácter."""
+
+    def __init__(
+        self,
+        tokenizer: Any,
+        progress_bar: tqdm,
+        *,
+        char_delay: float = DEFAULT_CHAR_DELAY,
+    ) -> None:
+        self._tokenizer = tokenizer
+        self._progress_bar = progress_bar
+        self._char_delay = char_delay
+        self._parts: list[str] = []
+        self._text_started = False
+
+    def put(self, value: Any) -> None:
+        if len(value.shape) > 1:
+            value = value[0]
+        self._progress_bar.update(int(value.shape[0]))
+
+        text = self._tokenizer.decode(value.tolist(), skip_special_tokens=True)
+        if not text:
+            return
+
+        if not self._text_started:
+            self._progress_bar.close()
+            self._text_started = True
+
+        self._parts.append(text)
+        for char in text:
+            sys.stdout.write(char)
+            sys.stdout.flush()
+            if self._char_delay > 0:
+                time.sleep(self._char_delay)
+
+    def end(self) -> None:
+        if not self._text_started:
+            self._progress_bar.close()
+        if self._parts:
+            sys.stdout.write("\n")
+            sys.stdout.flush()
+
+    @property
+    def text(self) -> str:
+        return "".join(self._parts).strip()
 
 
 class LlmMixin(ExtractorBase):
@@ -53,8 +109,9 @@ class LlmMixin(ExtractorBase):
         self,
         messages: list[dict[str, str]],
         *,
-        max_new_tokens: int = 512,
+        max_new_tokens: int = DEFAULT_MAX_NEW_TOKENS,
         model_id: str = DEFAULT_LLM_MODEL,
+        char_delay: float = DEFAULT_CHAR_DELAY,
     ) -> str:
         import torch
 
@@ -87,8 +144,18 @@ class LlmMixin(ExtractorBase):
 
         device = next(model.parameters()).device
         input_ids = input_ids.to(device)
-        input_len = input_ids.shape[-1]
 
+        progress_bar = tqdm(
+            total=max_new_tokens,
+            unit="tok",
+            desc="Generando",
+            dynamic_ncols=True,
+        )
+        display_streamer = _GenerationDisplayStreamer(
+            tokenizer,
+            progress_bar,
+            char_delay=char_delay,
+        )
         generate_kwargs = {
             "input_ids": input_ids,
             "max_new_tokens": max_new_tokens,
@@ -96,15 +163,26 @@ class LlmMixin(ExtractorBase):
             "temperature": 0.7,
             "top_p": 0.9,
             "pad_token_id": tokenizer.pad_token_id,
+            "streamer": display_streamer,
         }
         if attention_mask is not None:
             generate_kwargs["attention_mask"] = attention_mask.to(device)
 
-        with torch.no_grad():
-            output_ids = model.generate(**generate_kwargs)
+        output_ids: list[Any] = []
 
-        new_tokens = output_ids[0, input_len:]
-        return tokenizer.decode(new_tokens, skip_special_tokens=True).strip()
+        def _run_generation() -> None:
+            with torch.no_grad():
+                output_ids.append(model.generate(**generate_kwargs))
+
+        thread = Thread(target=_run_generation, daemon=True)
+        thread.start()
+        thread.join()
+
+        if not output_ids:
+            progress_bar.close()
+            return ""
+
+        return display_streamer.text
 
     def _save_chat_log(self, save_path: str = DEFAULT_CHAT_LOG) -> None:
         """Persiste la conversación en disco (requisito del enunciado)."""
@@ -124,8 +202,9 @@ class LlmMixin(ExtractorBase):
         prompt: Optional[str] = None,
         *,
         model_id: str = DEFAULT_LLM_MODEL,
-        max_new_tokens: int = 512,
+        max_new_tokens: int = DEFAULT_MAX_NEW_TOKENS,
         save_path: str = DEFAULT_CHAT_LOG,
+        char_delay: float = DEFAULT_CHAR_DELAY,
     ) -> list[dict[str, str]]:
         """
         Levanta Gemma en local y permite chat interactivo.
@@ -139,13 +218,13 @@ class LlmMixin(ExtractorBase):
             print("\n--- Prompt inicial (insights de la red) ---\n")
             print(prompt)
             self._chat_history.append({"role": "user", "content": prompt})
+            print("\n--- Respuesta del modelo ---\n")
             reply = self._generate_llm_reply(
                 self._chat_history,
                 max_new_tokens=max_new_tokens,
                 model_id=model_id,
+                char_delay=char_delay,
             )
-            print("\n--- Respuesta del modelo ---\n")
-            print(reply)
             self._chat_history.append({"role": "assistant", "content": reply})
 
         print(
@@ -167,12 +246,13 @@ class LlmMixin(ExtractorBase):
                 continue
 
             self._chat_history.append({"role": "user", "content": user_text})
+            print("\nAsistente:")
             reply = self._generate_llm_reply(
                 self._chat_history,
                 max_new_tokens=max_new_tokens,
                 model_id=model_id,
+                char_delay=char_delay,
             )
-            print(f"\nAsistente: {reply}")
             self._chat_history.append({"role": "assistant", "content": reply})
 
         if self._chat_history:
