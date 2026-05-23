@@ -1,0 +1,74 @@
+text_id,original_text,token,pos,dep,head
+0,#ethereum price update #eth 1628 77 usd #bitcoin 0 06963927405876436 #btc follow for recent eth price updates #altcoin #cryptocurrency #crypto,#,SYM,punct,update
+0,#ethereum price update #eth 1628 77 usd #bitcoin 0 06963927405876436 #btc follow for recent eth price updates #altcoin #cryptocurrency #crypto,ethereum,NOUN,compound,update
+0,#ethereum price update #eth 1628 77 usd #bitcoin 0 06963927405876436 #btc follow for recent eth price updates #altcoin #cryptocurrency #crypto,price,NOUN,compound,update
+0,#ethereum price update #eth 1628 77 usd #bitcoin 0 06963927405876436 #btc follow for recent eth price updates #altcoin #cryptocurrency #crypto,update,NOUN,nsubj,follow
+0,#ethereum price update #eth 1628 77 usd #bitcoin 0 06963927405876436 #btc follow for recent eth price updates #altcoin #cryptocurrency #crypto,#,SYM,dep,update
+0,#ethereum price update #eth 1628 77 usd #bitcoin 0 06963927405876436 #btc follow for recent eth price updates #altcoin #cryptocurrency #crypto,eth,NOUN,nmod,usd
+0,#ethereum price update #eth 1628 77 usd #bitcoin 0 06963927405876436 #btc follow for recent eth price updates #altcoin #cryptocurrency #crypto,1628,NUM,nummod,usd
+0,#ethereum price update #eth 1628 77 usd #bitcoin 0 06963927405876436 #btc follow for recent eth price updates #altcoin #cryptocurrency #crypto,77,NUM,nummod,usd
+0,#ethereum price update #eth 1628 77 usd #bitcoin 0 06963927405876436 #btc follow for recent eth price updates #altcoin #cryptocurrency #crypto,usd,NOUN,appos,update
+0,#ethereum price update #eth 1628 77 usd #bitcoin 0 06963927405876436 #btc follow for recent eth price updates #altcoin #cryptocurrency #crypto,#,SYM,dep,update
+0,#ethereum price update #eth 1628 77 usd #bitcoin 0 06963927405876436 #btc follow for recent eth price updates #altcoin #cryptocurrency #crypto,bitcoin,VERB,acl,update
+0,#ethereum price update #eth 1628 77 usd #bitcoin 0 06963927405876436 #btc follow for recent eth price updates #altcoin #cryptocurrency #crypto,0,NUM,nummod,bitcoin
+0,#ethereum price update #eth 1628 77 usd #bitcoin 0 06963927405876436 #btc follow for recent eth price updates #altcoin #cryptocurrency #crypto,06963927405876436,NUM,nummod,bitcoin
+0,#ethereum price update #eth 1628 77 usd #bitcoin 0 06963927405876436 #btc follow for recent eth price updates #altcoin #cryptocurrency #crypto,#,NOUN,nummod,btc
+0,#ethereum price update #eth 1628 77 usd #bitcoin 0 06963927405876436 #btc follow for recent eth price updates #altcoin #cryptocurrency #crypto,btc,NOUN,appos,update
+0,#ethereum price update #eth 1628 77 usd #bitcoin 0 06963927405876436 #btc follow for recent eth price updates #altcoin #cryptocurrency #crypto,follow,VERB,ROOT,follow
+0,#ethereum price update #eth 1628 77 usd #bitcoin 0 06963927405876436 #btc follow for recent eth price updates #altcoin #cryptocurrency #crypto,for,ADP,prep,follow
+0,#ethereum price update #eth 1628 77 usd #bitcoin 0 06963927405876436 #btc follow for recent eth price updates #altcoin #cryptocurrency #crypto,recent,ADJ,amod,price
+0,#ethereum price update #eth 1628 77 usd #bitcoin 0 06963927405876436 #btc follow for recent eth price updates #altcoin #cryptocurrency #crypto,eth,NOUN,compound,price
+0,#ethereum price update #eth 1628 77 usd #bitcoin 0 06963927405876436 #btc follow for recent eth price updates #altcoin #cryptocurrency #crypto,price,NOUN,pobj,for
+0,#ethereum price update #eth 1628 77 usd #bitcoin 0 06963927405876436 #btc follow for recent eth price updates #altcoin #cryptocurrency #crypto,updates,VERB,advcl,follow
+0,#ethereum price update #eth 1628 77 usd #bitcoin 0 06963927405876436 #btc follow for recent eth price updates #altcoin #cryptocurrency #crypto,#,SYM,dep,updates
+0,#ethereum price update #eth 1628 77 usd #bitcoin 0 06963927405876436 #btc follow for recent eth price updates #altcoin #cryptocurrency #crypto,altcoin,VERB,xcomp,updates
+0,#ethereum price update #eth 1628 77 usd #bitcoin 0 06963927405876436 #btc follow for recent eth price updates #altcoin #cryptocurrency #crypto,#,SYM,det,cryptocurrency
+0,#ethereum price update #eth 1628 77 usd #bitcoin 0 06963927405876436 #btc follow for recent eth price updates #altcoin #cryptocurrency #crypto,cryptocurrency,NOUN,dobj,altcoin
+0,#ethereum price update #eth 1628 77 usd #bitcoin 0 06963927405876436 #btc follow for recent eth price updates #altcoin #cryptocurrency #crypto,#,SYM,dep,altcoin
+0,#ethereum price update #eth 1628 77 usd #bitcoin 0 06963927405876436 #btc follow for recent eth price updates #altcoin #cryptocurrency #crypto,crypto,NOUN,punct,follow
+1,i would say that #bitcoin is the only thing that is structurally deflationary,i,PRON,nsubj,say
+1,i would say that #bitcoin is the only thing that is structurally deflationary,would,AUX,aux,say
+1,i would say that #bitcoin is the only thing that is structurally deflationary,say,VERB,ROOT,say
+1,i would say that #bitcoin is the only thing that is structurally deflationary,that,SCONJ,mark,is
+1,i would say that #bitcoin is the only thing that is structurally deflationary,#,SYM,quantmod,bitcoin
+1,i would say that #bitcoin is the only thing that is structurally deflationary,bitcoin,NOUN,nsubj,is
+1,i would say that #bitcoin is the only thing that is structurally deflationary,is,AUX,ccomp,say
+1,i would say that #bitcoin is the only thing that is structurally deflationary,the,DET,det,thing
+1,i would say that #bitcoin is the only thing that is structurally deflationary,only,ADJ,amod,thing
+1,i would say that #bitcoin is the only thing that is structurally deflationary,thing,NOUN,attr,is
+1,i would say that #bitcoin is the only thing that is structurally deflationary,that,PRON,nsubj,is
+1,i would say that #bitcoin is the only thing that is structurally deflationary,is,AUX,relcl,thing
+1,i would say that #bitcoin is the only thing that is structurally deflationary,structurally,ADV,advmod,deflationary
+1,i would say that #bitcoin is the only thing that is structurally deflationary,deflationary,ADJ,acomp,is
+2,#binancecoin price update bnb #bnb 303 59 usd #bitcoin 0 01279 btc #ethereum 0 18295 eth #altcoin #crypto #cryptocurrency follow for recent bnb price updates,#,SYM,punct,update
+2,#binancecoin price update bnb #bnb 303 59 usd #bitcoin 0 01279 btc #ethereum 0 18295 eth #altcoin #crypto #cryptocurrency follow for recent bnb price updates,binancecoin,NOUN,compound,price
+2,#binancecoin price update bnb #bnb 303 59 usd #bitcoin 0 01279 btc #ethereum 0 18295 eth #altcoin #crypto #cryptocurrency follow for recent bnb price updates,price,NOUN,compound,update
+2,#binancecoin price update bnb #bnb 303 59 usd #bitcoin 0 01279 btc #ethereum 0 18295 eth #altcoin #crypto #cryptocurrency follow for recent bnb price updates,update,NOUN,nsubj,bitcoin
+2,#binancecoin price update bnb #bnb 303 59 usd #bitcoin 0 01279 btc #ethereum 0 18295 eth #altcoin #crypto #cryptocurrency follow for recent bnb price updates,bnb,NOUN,nmod,bnb
+2,#binancecoin price update bnb #bnb 303 59 usd #bitcoin 0 01279 btc #ethereum 0 18295 eth #altcoin #crypto #cryptocurrency follow for recent bnb price updates,#,SYM,nmod,bnb
+2,#binancecoin price update bnb #bnb 303 59 usd #bitcoin 0 01279 btc #ethereum 0 18295 eth #altcoin #crypto #cryptocurrency follow for recent bnb price updates,bnb,PROPN,appos,update
+2,#binancecoin price update bnb #bnb 303 59 usd #bitcoin 0 01279 btc #ethereum 0 18295 eth #altcoin #crypto #cryptocurrency follow for recent bnb price updates,303,NUM,compound,59
+2,#binancecoin price update bnb #bnb 303 59 usd #bitcoin 0 01279 btc #ethereum 0 18295 eth #altcoin #crypto #cryptocurrency follow for recent bnb price updates,59,NUM,nummod,usd
+2,#binancecoin price update bnb #bnb 303 59 usd #bitcoin 0 01279 btc #ethereum 0 18295 eth #altcoin #crypto #cryptocurrency follow for recent bnb price updates,usd,NOUN,appos,bnb
+2,#binancecoin price update bnb #bnb 303 59 usd #bitcoin 0 01279 btc #ethereum 0 18295 eth #altcoin #crypto #cryptocurrency follow for recent bnb price updates,#,SYM,dep,update
+2,#binancecoin price update bnb #bnb 303 59 usd #bitcoin 0 01279 btc #ethereum 0 18295 eth #altcoin #crypto #cryptocurrency follow for recent bnb price updates,bitcoin,VERB,nmod,follow
+2,#binancecoin price update bnb #bnb 303 59 usd #bitcoin 0 01279 btc #ethereum 0 18295 eth #altcoin #crypto #cryptocurrency follow for recent bnb price updates,0,NUM,nummod,bitcoin
+2,#binancecoin price update bnb #bnb 303 59 usd #bitcoin 0 01279 btc #ethereum 0 18295 eth #altcoin #crypto #cryptocurrency follow for recent bnb price updates,01279,NUM,nummod,ethereum
+2,#binancecoin price update bnb #bnb 303 59 usd #bitcoin 0 01279 btc #ethereum 0 18295 eth #altcoin #crypto #cryptocurrency follow for recent bnb price updates,btc,NOUN,compound,#
+2,#binancecoin price update bnb #bnb 303 59 usd #bitcoin 0 01279 btc #ethereum 0 18295 eth #altcoin #crypto #cryptocurrency follow for recent bnb price updates,#,SYM,nmod,ethereum
+2,#binancecoin price update bnb #bnb 303 59 usd #bitcoin 0 01279 btc #ethereum 0 18295 eth #altcoin #crypto #cryptocurrency follow for recent bnb price updates,ethereum,NOUN,advmod,bitcoin
+2,#binancecoin price update bnb #bnb 303 59 usd #bitcoin 0 01279 btc #ethereum 0 18295 eth #altcoin #crypto #cryptocurrency follow for recent bnb price updates,0,NUM,nummod,bitcoin
+2,#binancecoin price update bnb #bnb 303 59 usd #bitcoin 0 01279 btc #ethereum 0 18295 eth #altcoin #crypto #cryptocurrency follow for recent bnb price updates,18295,NUM,npadvmod,0
+2,#binancecoin price update bnb #bnb 303 59 usd #bitcoin 0 01279 btc #ethereum 0 18295 eth #altcoin #crypto #cryptocurrency follow for recent bnb price updates,eth,NOUN,prep,bitcoin
+2,#binancecoin price update bnb #bnb 303 59 usd #bitcoin 0 01279 btc #ethereum 0 18295 eth #altcoin #crypto #cryptocurrency follow for recent bnb price updates,#,SYM,prep,eth
+2,#binancecoin price update bnb #bnb 303 59 usd #bitcoin 0 01279 btc #ethereum 0 18295 eth #altcoin #crypto #cryptocurrency follow for recent bnb price updates,altcoin,NOUN,conj,bitcoin
+2,#binancecoin price update bnb #bnb 303 59 usd #bitcoin 0 01279 btc #ethereum 0 18295 eth #altcoin #crypto #cryptocurrency follow for recent bnb price updates,#,SYM,nmod,crypto
+2,#binancecoin price update bnb #bnb 303 59 usd #bitcoin 0 01279 btc #ethereum 0 18295 eth #altcoin #crypto #cryptocurrency follow for recent bnb price updates,crypto,NOUN,dobj,altcoin
+2,#binancecoin price update bnb #bnb 303 59 usd #bitcoin 0 01279 btc #ethereum 0 18295 eth #altcoin #crypto #cryptocurrency follow for recent bnb price updates,#,ADP,nmod,follow
+2,#binancecoin price update bnb #bnb 303 59 usd #bitcoin 0 01279 btc #ethereum 0 18295 eth #altcoin #crypto #cryptocurrency follow for recent bnb price updates,cryptocurrency,NOUN,compound,follow
+2,#binancecoin price update bnb #bnb 303 59 usd #bitcoin 0 01279 btc #ethereum 0 18295 eth #altcoin #crypto #cryptocurrency follow for recent bnb price updates,follow,NOUN,ROOT,follow
+2,#binancecoin price update bnb #bnb 303 59 usd #bitcoin 0 01279 btc #ethereum 0 18295 eth #altcoin #crypto #cryptocurrency follow for recent bnb price updates,for,ADP,prep,follow
+2,#binancecoin price update bnb #bnb 303 59 usd #bitcoin 0 01279 btc #ethereum 0 18295 eth #altcoin #crypto #cryptocurrency follow for recent bnb price updates,recent,ADJ,amod,updates
+2,#binancecoin price update bnb #bnb 303 59 usd #bitcoin 0 01279 btc #ethereum 0 18295 eth #altcoin #crypto #cryptocurrency follow for recent bnb price updates,bnb,NOUN,compound,price
+2,#binancecoin price update bnb #bnb 303 59 usd #bitcoin 0 01279 btc #ethereum 0 18295 eth #altcoin #crypto #cryptocurrency follow for recent bnb price updates,price,NOUN,compound,updates
+2,#binancecoin price update bnb #bnb 303 59 usd #bitcoin 0 01279 btc #ethereum 0 18295 eth #altcoin #crypto #cryptocurrency follow for recent bnb price updates,updates,NOUN,pobj,for
