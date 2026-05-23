@@ -36,6 +36,15 @@ class TextAnalysisMixin(ExtractorBase):
         self.data["clean_text"] = self.data["text"].apply(self.clean_text)
         return self.data
 
+    def clean_data(self) -> pd.DataFrame:
+        """
+        Preprocesa el corpus: crea la columna ``clean_text`` a partir de ``text``.
+
+        Punto del pipeline de la Unidad 6 previo al análisis de redes.
+        """
+        print("Limpiando textos del corpus...")
+        return self.prepare_clean_text_column()
+
     def extract_hashtags(self, text: str) -> list:
         if pd.isna(text):
             return []

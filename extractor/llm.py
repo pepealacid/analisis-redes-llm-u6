@@ -111,6 +111,7 @@ class LlmMixin(ExtractorBase):
         *,
         model_id: str = DEFAULT_LLM_MODEL,
         max_new_tokens: int = 512,
+        save_path: str = DEFAULT_CHAT_LOG,
     ) -> list[dict[str, str]]:
         """
         Levanta Gemma en local y permite chat interactivo.
@@ -161,6 +162,6 @@ class LlmMixin(ExtractorBase):
             self._chat_history.append({"role": "assistant", "content": reply})
 
         if self._chat_history:
-            self._save_chat_log()
+            self._save_chat_log(save_path)
 
         return self._chat_history
