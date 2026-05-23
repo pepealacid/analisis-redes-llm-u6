@@ -7,6 +7,7 @@ Métodos previstos:
   - generate_prompt_from_network(): texto estructurado para el LLM
 """
 
+import os
 import re
 from typing import Any, Optional
 
@@ -21,6 +22,7 @@ from .base import ExtractorBase
 _MENTION_REGEX = re.compile(r"@([\w]+)", flags=re.UNICODE)
 
 DEFAULT_NETWORK_FIGURE = "outputs/network_graph.png"
+DEFAULT_NETWORK_PROMPT = "outputs/network_prompt.txt"
 
 
 def _ascii_safe(text: str) -> str:
@@ -239,3 +241,101 @@ class NetworkAnalysisMixin(ExtractorBase):
         print(f"\nVisualización guardada en: {save_path}")
 
         return insights
+
+    def _dominant_hashtag(self) -> tuple[str, int]:
+        """Obtiene el hashtag más repetido del corpus cargado."""
+        self._require_data()
+        hashtag_stats = self.analytics_hashtags_extended()["overall"]
+
+        if hashtag_stats.empty:
+            return "ninguno detectado", 0
+
+        top_row = hashtag_stats.iloc[0]
+        return str(top_row["hashtag"]), int(top_row["frequency"])
+
+    def _format_top_users_for_prompt(
+        self,
+        top_nodes: list[tuple[str, float]],
+    ) -> str:
+        if not top_nodes:
+            return "  (no hay usuarios con menciones registradas)"
+
+        lines = []
+        for index, (user, score) in enumerate(top_nodes, start=1):
+            lines.append(
+                f"  {index}. @{_ascii_safe(user)} "
+                f"(centralidad de grado = {score:.4f})"
+            )
+        return "\n".join(lines)
+
+    def generate_prompt_from_network(
+        self,
+        graph: nx.DiGraph,
+        save_path: str = DEFAULT_NETWORK_PROMPT,
+    ) -> str:
+        """
+        Construye un prompt reutilizable para interpretar la red con un LLM.
+
+        Reutiliza las métricas de ``analyze_network()`` cuando están disponibles.
+        Guarda una copia del texto en ``outputs/network_prompt.txt``.
+
+        Args:
+            graph: Grafo analizado previamente o listo para analizar.
+            save_path: Ruta del fichero donde persistir el prompt.
+
+        Returns:
+            Texto del prompt listo para enviar al modelo.
+        """
+        if self._network_insights is None:
+            self.analyze_network(graph)
+
+        insights = self._network_insights
+        top_hashtag, top_hashtag_freq = self._dominant_hashtag()
+
+        top_users_block = self._format_top_users_for_prompt(
+            insights.get("top_nodes", [])
+        )
+        community_count = len(insights.get("communities", []))
+        density = insights.get("density", 0.0)
+
+        prompt = f"""Contexto del análisis
+---------------------
+Se ha modelado una red social a partir de tweets. Cada arista del grafo
+representa que un usuario mencionó (@) a otro en el texto original.
+
+Indicadores calculados:
+- Nodos (usuarios): {insights.get("nodes", 0)}
+- Aristas (menciones): {insights.get("edges", 0)}
+- Densidad de la red: {density:.4f}
+- Comunidades detectadas (Louvain): {community_count}
+- Hashtag más frecuente: {top_hashtag} ({top_hashtag_freq} apariciones)
+
+Actores con mayor centralidad de grado (top 3):
+{top_users_block}
+
+Tareas de interpretación
+------------------------
+Con la información anterior, elabora un informe breve que cubra:
+
+1. Comportamiento social observable en la red (quién menciona a quién,
+   presencia de hubs, conversaciones aisladas o interconectadas).
+2. Tendencias temáticas que puedan relacionarse con el hashtag dominante
+   y con los usuarios más centrales.
+3. Posibles causas o factores que expliquen esos patrones (eventos,
+   campañas, cuentas influyentes, sesgo del corpus).
+4. Actores relevantes a monitorizar y por qué destacan en la red.
+
+Responde en español, con secciones numeradas y lenguaje claro. No inventes
+cifras adicionales: apóyate únicamente en los datos proporcionados.
+"""
+
+        output_dir = os.path.dirname(save_path)
+        if output_dir:
+            os.makedirs(output_dir, exist_ok=True)
+
+        with open(save_path, "w", encoding="utf-8") as file:
+            file.write(prompt)
+
+        print(f"Prompt de red guardado en: {save_path}")
+
+        return prompt
