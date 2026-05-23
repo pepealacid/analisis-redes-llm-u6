@@ -7,16 +7,14 @@ from typing import Optional
 import matplotlib.pyplot as plt
 import nltk
 import pandas as pd
-import requests
 import spacy
-from dotenv import load_dotenv
 from gensim import corpora
 from gensim.models.ldamodel import LdaModel
 from nltk.corpus import stopwords
 from textblob import TextBlob
 from wordcloud import WordCloud
 
-from urllib.parse import quote_plus
+from rapidapi_client import RapidApiTwitterClient
 
 
 class DataExtractor:
@@ -29,120 +27,25 @@ class DataExtractor:
         self,
         query: str,
         max_results: int = 100,
-        output_file: str = "datasets/tweets_from_api.csv"
+        output_file: str = "datasets/tweets_from_api.csv",
+        search_type: str = "Top",
     ) -> pd.DataFrame:
         """
-        Conecta con RapidAPI usando twitter-scraper2, extrae tweets por búsqueda,
-        los normaliza en formato tabular y los guarda en self.data y en CSV.
+        Obtiene tweets vía RapidAPI (twitter-api45) y los guarda en CSV.
+
+        Usa el endpoint /search.php con paginación por next_cursor.
         """
-        # Carga credenciales de RapidAPI desde el archivo .env
-        load_dotenv()
-
-        rapidapi_key = os.getenv("RAPIDAPI_KEY")
-        rapidapi_host = os.getenv("RAPIDAPI_HOST", "twitter-scraper2.p.rapidapi.com")
-
-        if not rapidapi_key:
-            raise ValueError("No se ha encontrado RAPIDAPI_KEY. Revisa el archivo .env.")
-
-        url = "https://twitter-scraper2.p.rapidapi.com/scrape"
-
-
-        headers = {
-            "Content-Type": "application/json",
-            "x-rapidapi-key": rapidapi_key,
-            "x-rapidapi-host": rapidapi_host,
-        }
-
-        encoded_query = quote_plus(query)
-
-        params = {
-            "searchTerms": query,
-            "maxTweets": max_results,
-            "url": f"https://x.com/search?q={encoded_query}&src=typed_query&f=live",
-        }
-
-        response = requests.get(url, headers=headers, params=params, timeout=60)
-
-        if response.status_code != 200:
-            raise RuntimeError(
-                f"Error en la llamada a RapidAPI: {response.status_code} - {response.text}"
-            )
-
-        json_data = response.json()
-
-        tweets = (
-            json_data.get("tweets")
-            or json_data.get("data")
-            or json_data.get("results")
-            or json_data.get("timeline")
-            or []
+        client = RapidApiTwitterClient()
+        df = client.search_tweets(
+            query=query,
+            max_results=max_results,
+            search_type=search_type,
         )
 
-        if isinstance(tweets, dict):
-            tweets = (
-                tweets.get("tweets")
-                or tweets.get("data")
-                or tweets.get("results")
-                or tweets.get("items")
-                or []
-            )
+        output_dir = os.path.dirname(output_file)
+        if output_dir:
+            os.makedirs(output_dir, exist_ok=True)
 
-        if not tweets:
-            raise ValueError(
-                "La API no devolvió una lista de tweets reconocible. "
-                f"Claves disponibles: {list(json_data.keys())}"
-            )
-
-        rows = []
-
-        for tweet in tweets[:max_results]:
-            text = (
-                tweet.get("text")
-                or tweet.get("full_text")
-                or tweet.get("content")
-                or tweet.get("tweetText")
-                or ""
-            )
-
-            date = (
-                tweet.get("created_at")
-                or tweet.get("createdAt")
-                or tweet.get("date")
-                or tweet.get("timestamp")
-                or ""
-            )
-
-            user_data = (
-                tweet.get("user")
-                or tweet.get("author")
-                or tweet.get("user_info")
-                or {}
-            )
-
-            if isinstance(user_data, dict):
-                user_name = (
-                    user_data.get("screen_name")
-                    or user_data.get("username")
-                    or user_data.get("userName")
-                    or user_data.get("name")
-                    or "unknown"
-                )
-            else:
-                user_name = str(user_data)
-
-            if text:
-                rows.append({
-                    "text": text,
-                    "date": date,
-                    "user_name": user_name,
-                })
-
-        df = pd.DataFrame(rows)
-
-        if df.empty:
-            raise ValueError("No se han podido transformar tweets válidos a DataFrame.")
-
-        os.makedirs(os.path.dirname(output_file), exist_ok=True)
         df.to_csv(output_file, index=False, encoding="utf-8")
 
         self.source_file = output_file

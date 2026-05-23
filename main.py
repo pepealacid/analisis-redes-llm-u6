@@ -5,6 +5,7 @@ from data_extractor import DataExtractor
 
 USE_RAPIDAPI = True
 QUERY = "bitcoin"
+SEARCH_TYPE = "Top"  # Top | Latest (según twitter-api45 en RapidAPI)
 MAX_RESULTS = 100
 
 LOCAL_DATASET = os.path.join("datasets", "Bitcoin_tweets_dataset_2.csv")
@@ -24,7 +25,8 @@ if __name__ == "__main__":
             df = extractor.load_data_api(
                 query=QUERY,
                 max_results=MAX_RESULTS,
-                output_file=API_OUTPUT
+                output_file=API_OUTPUT,
+                search_type=SEARCH_TYPE,
             )
             print("Datos cargados desde RapidAPI correctamente.")
         except Exception as exc:

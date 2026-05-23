@@ -1,0 +1,6 @@
+[project]
+name = "ud6-analisis-redes-sociales"
+version = "1.0.0"
+description = "Análisis de sentimiento y tendencias en tweets (Bitcoin)"
+readme = "README.md"
+requires-python = ">=3.11,<3.14"

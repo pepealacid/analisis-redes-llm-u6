@@ -45,14 +45,15 @@ datasets/Bitcoin_tweets_dataset_2.csv
 
 ## Uso de RapidAPI
 
-Se ha implementado el método `load_data_api()` para permitir la conexión
-con APIs de Twitter.
+Se ha implementado el método `load_data_api()` mediante el módulo
+`rapidapi_client.py`, que consume **Twitter API45** en RapidAPI
+(`twitter-api45.p.rapidapi.com`).
 
-Debido a limitaciones de las APIs gratuitas (pocos resultados, endpoints
-inconsistentes), no ha sido posible obtener un dataset suficiente.
+- Endpoint: `GET /search.php`
+- Parámetros: `query`, `search_type` (p. ej. `Top`), `cursor` para paginar
+- Respuesta: lista `timeline` y `next_cursor`
 
-Por ello, siguiendo el enunciado, he utilizado el dataset de la
-práctica anterior.
+Si la API falla o no hay cuota, el script usa el CSV local como respaldo.
 
 ------------------------------------------------------------------------
 
@@ -72,19 +73,44 @@ práctica anterior.
 
 ## Ejecución
 
+### Requisitos
+
+- **Python 3.11** (o 3.12). El proyecto no es compatible con Python 3.14 por las
+  dependencias de spaCy y el ecosistema NLP (`requires-python` en `pyproject.toml`).
+- En Windows, si tienes varias versiones instaladas, usa siempre el launcher `py -3.11`.
+
 ### Instalación
 
-pip install -r requirements.txt
+Desde la carpeta del proyecto:
+
+```powershell
+py -3.11 -m pip install -r requirements.txt
+```
+
+En **Cursor / VS Code**, el intérprete queda fijado a Python 3.11 mediante
+`.vscode/settings.json` (ruta estándar de instalación en Windows). Si tu Python 3.11
+está en otra ruta, cámbiala en ese fichero o elige el intérprete con
+*Python: Select Interpreter*.
 
 ### Configuración (opcional para API)
 
-Crear archivo .env:
-RAPIDAPI_KEY=...
-RAPIDAPI_HOST=...
+Crear archivo `.env` (ver `.env.example`):
+
+```
+RAPIDAPI_KEY=tu_clave
+RAPIDAPI_HOST=twitter-api45.p.rapidapi.com
+```
+
+Suscríbete a [Twitter API45 en RapidAPI](https://rapidapi.com/alexanderxbx/api/twitter-api45).
 
 ### Ejecución
 
-python main.py
+```powershell
+py -3.11 main.py
+```
+
+Si el IDE ya usa Python 3.11 como intérprete, también puedes ejecutar `python main.py`
+desde el terminal integrado.
 
 ------------------------------------------------------------------------
 
