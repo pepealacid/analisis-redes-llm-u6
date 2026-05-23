@@ -101,7 +101,3 @@ UD6/
 ## Hardware
 
 Grafo y prompt corren en CPU. Para Gemma conviene **GPU NVIDIA con 6–8 GB VRAM** y **16 GB RAM**; en CPU la inferencia es muy lenta pero funcional.
-
-## Unidad 4
-
-LDA, sentimiento, spaCy, wordcloud y exportación siguen en los mixins; no se ejecutan desde `main.py` actual.
