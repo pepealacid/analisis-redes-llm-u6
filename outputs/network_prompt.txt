@@ -1,0 +1,31 @@
+Contexto del análisis
+---------------------
+Se ha modelado una red social a partir de tweets. Cada arista del grafo
+representa que un usuario mencionó (@) a otro en el texto original.
+
+Indicadores calculados:
+- Nodos (usuarios): 73
+- Aristas (menciones): 3
+- Densidad de la red: 0.0006
+- Comunidades detectadas (Louvain): 70
+- Hashtag más frecuente: #bitcoin (10 apariciones)
+
+Actores con mayor centralidad de grado (top 3):
+  1. @liebe19_ (centralidad de grado = 0.0139)
+  2. @metaspace_verse (centralidad de grado = 0.0139)
+  3. @tirakact (centralidad de grado = 0.0139)
+
+Tareas de interpretación
+------------------------
+Con la información anterior, elabora un informe breve que cubra:
+
+1. Comportamiento social observable en la red (quién menciona a quién,
+   presencia de hubs, conversaciones aisladas o interconectadas).
+2. Tendencias temáticas que puedan relacionarse con el hashtag dominante
+   y con los usuarios más centrales.
+3. Posibles causas o factores que expliquen esos patrones (eventos,
+   campañas, cuentas influyentes, sesgo del corpus).
+4. Actores relevantes a monitorizar y por qué destacan en la red.
+
+Responde en español, con secciones numeradas y lenguaje claro. No inventes
+cifras adicionales: apóyate únicamente en los datos proporcionados.
