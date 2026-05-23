@@ -41,3 +41,6 @@ class DataExtractor(
         self.source_file = source_file
         self.data: Optional[pd.DataFrame] = None
         self.chunksize = chunksize
+        self._llm_tokenizer = None
+        self._llm_model = None
+        self._chat_history: list[dict[str, str]] = []
